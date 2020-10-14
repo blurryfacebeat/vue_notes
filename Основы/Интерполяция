@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <h1>String: {{ name }}</h1>
+        <h1>Sum: {{ 10 + 20 }}</h1>
+        <h1>Number: {{ number }}</h1>
+        <h1>Method: {{ sayHello() }}</h1>
+        <h1>If statement {{ isOk ? 'My name is Robot' : 'My name is Jack' }}</h1>
+        <h1>Functions: {{ string.split('').reverse().join('') }}</h1>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                name: 'vueWorld',
+                number: 100,
+                isOk: true,
+                string: `My girlfriend's name is Katy`
+            },
+            methods: {
+                sayHello: function() {
+                    return `Hello, World!!!`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
