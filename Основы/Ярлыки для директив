@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <h2>
+            <a :href="url" target="_blank">Google</a>
+        </h2>
+
+        <h2>
+            Counter: {{ counter }}
+        </h2>
+
+        <button @click="counter++">Rise</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                url: 'https://google.com',
+                counter: 0
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+</html>
