@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <!-- v-if полностью удаляет элемент из DOM-дерева, а v-show добавляет элементу display: none; -->
+        <h1 v-if="isVisible">I am visible!</h1>
+        <h2 v-else>You can't see me!</h2>
+
+        <hr>
+
+        <h3 v-show="isVisible">Эшкере</h3>
+        <h4 v-show="!isVisible">Не эшкере</h4>
+        <hr>
+
+        <button @click="isVisible = !isVisible">Toggle</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                isVisible: true
+            }
+        });
+    </script>
+</body>
+</html>
