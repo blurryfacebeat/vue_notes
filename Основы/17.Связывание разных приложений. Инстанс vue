@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <h2>{{ title }}</h2>
+        <h2>{{ newField }}</h2>
+        <button @click="title = 'Updated title'">Update title</button>
+    </div>
+
+    <hr>    
+
+    <div id="app2">
+        <h2>{{ title }}</h2>
+        <button @click="updateFirstTitle">Update first title</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const vue1 = new Vue({
+            el: '#app',
+            data: {
+                title: 'Hello! I am Vue'
+            },
+            methods: {
+                alertFast: function() {
+                    alert('Ababa Bubub');
+                }
+            }
+        });
+
+        vue1.newField = 'Random text';
+
+        new Vue({
+            el: '#app2',
+            data: {
+                title: 'Hello! I am Vue 2'
+            },
+            methods: {
+                updateFirstTitle: function() {
+                    vue1.title = 'Updated from second app';
+                    vue1.newField = 'new newField!';
+
+                    setTimeout(vue1.alertFast, 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
