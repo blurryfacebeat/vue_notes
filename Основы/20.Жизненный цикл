@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <h2>{{ title }}</h2>
+        <button @click="title = 'Changed title'">Change</button>
+        <button @click="doDestroy">Destroy</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                title: 'Hello! I am Vue'
+            },
+            methods: {
+                doDestroy: function() {
+                    // Удаляет приложение, и больше оно не работает
+                    this.$destroy();
+                }
+            },
+            // Вызывается тогда, когда произошла инициализация, и vue готовится создать новое приложение
+            beforeCreate: function() {
+                console.log('Before Create');
+            },
+            // На этом этапе vue приложение создано
+            created: function() {
+                console.log('Created');
+            },
+            // Начинает анализировать шаблон, который мы дали, и он собирается его вставлять в нужный элемент
+            beforeMount: function() {
+                console.log('Before Mount');
+            },
+            // Говорит о том, что html дерево готово, и оно вставляется в элемент
+            mounted: function() {
+                console.log('Mounted');
+            },
+            // Вызываются перед тем, как что-то изменилось и что-то закончило изменяться
+            beforeUpdate: function() {
+                console.log('Before Updated');
+            },
+            updated: function() {
+                console.log('Updated');
+            },
+            // Перед удалением инстанса, и после удаления
+            beforeDestroy: function() {
+                console.log('Before Destroy');
+            },
+            destroyed: function() {
+                console.log('Destroyed');
+            }
+        });
+    </script>
+</body>
+</html>
