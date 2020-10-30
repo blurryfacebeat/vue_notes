@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <h2 v-if="isVisible">I am visible!</h2>
+        <h2 v-else="!isVisible">Invisible</h2>
+        <button @click="isVisible = !isVisible">Click</button>
+
+        <hr>
+
+        <h2 v-if="type === 'a'">A</h2>
+        <h2 v-else-if="type === 'b'">B</h2>
+        <h2 v-else-if="type === 'c'">C</h2>
+        <h2 v-else>Not match</h2>
+
+        <hr>
+
+        <input type="text" v-model="type">
+
+        <hr>
+        <template v-if="isVisible">
+            <h2>I am title</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, animi?</p>
+        </template>
+
+        <template v-else>
+            <h2 style="color: red">I am title</h2>
+            <p style="color: red">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, animi?</p>
+        </template>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                isVisible: true,
+                type: 'a'
+            }
+        });
+    </script>
+</body>
+</html>
