@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <!-- Можно вывести список так -->
+        <ul>
+            <li>{{ people[0] }}</li>
+            <li>{{ people[1] }}</li>
+            <li>{{ people[2] }}</li>
+        </ul>
+
+        <hr>
+
+        <!-- С помощью v-for, работа с массивом элементов -->
+        <ul>
+            <li v-for="(person, index) in people">{{ index + 1}}: {{ person }}</li>
+        </ul>
+
+        <hr>
+        <!-- Работа с массивом объектов, вместо in можно писать of -->
+        <ul>
+            <li v-for="(person, index) in people2">{{ index + 1 }}. {{ person.name }} - <b>{{ person.age + ' года' }}</b></li>
+        </ul>
+
+        <hr>
+        <!-- Выведет 4 чисел -->
+        <ol>
+            <li v-for="num of 4">{{ num }}</li>
+        </ol>
+
+        <hr>
+        <!-- Выведем данные из объекта в шаблон -->
+        <ul>
+            <li v-for="(value, key, index) in person"><i>{{ index }}</i>. {{ 'Ключ: ' + key }}  {{ ' = ' + value }}</li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                people: [
+                    'Vyachya',
+                    'Dimon',
+                    'Vlados',
+                    'Putin'
+                ],
+                people2: [
+                    {name: 'Sanya', age: 23},
+                    {name: 'Katya', age: 26},
+                    {name: 'Naruto', age: 29}
+                ],
+                person: {
+                    name: 'Max',
+                    age: 50,
+                    job: 'Front-End'
+                }
+            }
+        });
+    </script>
+</body>
+</html>
