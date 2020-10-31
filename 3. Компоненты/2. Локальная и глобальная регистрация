@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JSt</title>
+</head>
+<body>
+    <div id="app">
+        <my-counter v-for="c of 2"></my-counter>
+    </div>
+
+    <hr>
+
+    <div id="app2">
+        <my-counter></my-counter>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const component = {
+            template: `
+                <div style="border: 1px solid black; padding: 10px">
+                    <h2>Counter: {{ counter }}</h2>
+                    <button @click="counter++">++</button>
+                </div>
+            `,
+            data: function() {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                add: function() {
+                    this.counter++;
+                }
+            }
+        };
+
+        // Глобальная регистрация, доступная в любом приложении
+        // Vue.component('my-counter', {
+        //     template: `
+        //         <div style="border: 1px solid black; padding: 10px">
+        //             <h2>Counter: {{ counter }}</h2>
+        //             <button @click="counter++">++</button>
+        //         </div>
+        //     `,
+        //     data: function() {
+        //         return {
+        //             counter: 0
+        //         }
+        //     },
+        //     methods: {
+        //         add: function() {
+        //             this.counter++;
+        //         }
+        //     }
+        // });
+
+        new Vue({
+            el: '#app',
+            // Локальная регистрация компонента, доступна только локально для приложения
+            components: {
+                'my-counter': component
+            }
+        });
+
+        new Vue({
+            el: '#app2'
+        });
+    </script>
+</body>
+</html>
