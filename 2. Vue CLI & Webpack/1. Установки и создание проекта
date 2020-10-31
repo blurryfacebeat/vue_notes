@@ -1,0 +1,5 @@
+https://github.com/vuejs/vue-cli/tree/v2#vue-cli--
+
+$ vue init <template-name> <project-name>
+
+$ vue init webpack my-project
