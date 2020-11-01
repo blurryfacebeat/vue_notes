@@ -1,0 +1,109 @@
+// App.vue
+<template>
+  <div>
+    <h1>Parent: {{ carName }}</h1>
+
+    <app-counter :counter="counter"></app-counter>
+
+    <app-car :carName="carName" :carAge="carAge" :changeFunc="changeNameToAudi" :counter="counter" @nameChanged="carName = $event" @counterUpdated="counter = $event"></app-car>
+  </div>
+</template>
+
+<script>
+  import Car from './Car.vue';
+  import Counter from './Counter.vue';
+
+  export default {
+    data () {
+      return {
+        carName: 'Ford',
+        carAge: 23,
+        counter: 0
+      }
+    },
+    methods: {
+      changeNameToAudi() {
+        this.carName = 'Audi R8';
+      }
+    },
+    components: {
+      appCar: Car,
+      appCounter: Counter
+    }
+  }
+</script>
+
+<style lang="scss">
+
+</style>
+
+// Car.vue
+<template>
+    <div class="car">
+        <h3>Name: {{ carName }} // {{ reverseName }}</h3>
+        <p>Year: {{ carAge }}</p>
+        <button @click="changeName">Change name</button>
+        <button @click="changeFunc">Change from parrent</button>
+        <button @click="updateCounter">Update Counter</button>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: {
+            carName: {
+                type: String,
+                default: 'Default name'
+            },
+            carAge: Number,
+            changeFunc: Function,
+            counter: Number
+        },
+        computed: {
+            reverseName() {
+                return this.carName.split('').reverse().join('');
+            }
+        },
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            changeName() {
+                this.carName = 'BMW X6';
+                this.$emit('nameChanged', this.carName);
+            },
+            updateCounter() {
+                this.$emit('counterUpdated', this.counter++);
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .car {
+        padding: 24px;
+        border: 1px solid black;
+    }
+</style>
+
+// Counter.vue
+<template>
+    <h1>Counter: {{ counter }}</h1>
+</template>
+
+<script>
+export default {
+    props: ['counter']
+}
+</script>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
