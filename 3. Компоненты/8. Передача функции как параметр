@@ -1,0 +1,88 @@
+// App.vue
+<template>
+  <div>
+    <h1>Parent: {{ carName }}</h1>
+    
+    <app-car :carName="carName" :carAge="carAge" :changeFunc="changeNameToAudi" @nameChanged="carName = $event"></app-car>
+  </div>
+</template>
+
+<script>
+  import Car from './Car.vue';
+
+  export default {
+    data () {
+      return {
+        carName: 'Ford',
+        carAge: 23
+      }
+    },
+    methods: {
+      changeNameToAudi() {
+        this.carName = 'Audi R8';
+      }
+    },
+    components: {
+      appCar: Car
+    }
+  }
+</script>
+
+<style lang="scss">
+
+</style>
+
+// Car.vue
+<template>
+    <div class="car">
+        <h3>Name: {{ carName }} // {{ reverseName }}</h3>
+        <p>Year: {{ carAge }}</p>
+        <button @click="changeName">Change name</button>
+        <button @click="changeFunc">Change from parrent</button>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: {
+            carName: {
+                type: String,
+                default: 'Default name'
+            },
+            carAge: Number,
+            changeFunc: Function
+        },
+        computed: {
+            reverseName() {
+                return this.carName.split('').reverse().join('');
+            }
+        },
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            changeName() {
+                this.carName = 'BMW X6';
+                this.$emit('nameChanged', this.carName);
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .car {
+        padding: 24px;
+        border: 1px solid black;
+    }
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
