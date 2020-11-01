@@ -1,0 +1,85 @@
+// App.vue
+<template>
+  <div>
+    <h1>Parent: {{ carName }}</h1>
+    
+    <app-car :carName="carName" :carAge="carAge"></app-car>
+  </div>
+</template>
+
+<script>
+  import Car from './Car.vue';
+
+  export default {
+    data () {
+      // передаем данные, с которыми работает функция split(), очевидно, что с числом она работать не может, и мы получим ошибку, чтобы понимать причину ошибки, нужно использовать валидацию
+      return {
+        // carName: 23,
+        carName: 'Ford',
+        carAge: 23
+      }
+    },
+    components: {
+      appCar: Car
+    }
+  }
+</script>
+
+<style lang="scss">
+
+</style>
+
+// Car.vue
+<template>
+    <div class="car">
+        <h3>Name: {{ carName }} // {{ reverseName }}</h3>
+        <p>Year: {{ carAge }}</p>
+    </div>
+</template>
+
+<script>
+    export default {
+        // props: ['carName', 'carAge'],
+        // Валидация
+        // props: {
+        //     carName: String,
+        //     carAge: Number
+        // },
+        props: {
+            carName: {
+                type: String,
+                // поле - обязательное, без него компонент не запустится
+                // required: true,
+                // Дефолтное значение, нет смысла с required
+                default: 'Default name'
+            },
+            carAge: Number
+        },
+        computed: {
+            reverseName() {
+                return this.carName.split('').reverse().join('');
+            }
+        },
+        data() {
+            return {
+
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .car {
+        padding: 24px;
+        border: 1px solid black;
+    }
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+})
