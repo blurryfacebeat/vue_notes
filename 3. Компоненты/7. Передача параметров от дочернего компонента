@@ -1,0 +1,84 @@
+// App.vue
+<template>
+  <div>
+    <!-- Хотим поменять h1, app-car меняется, так как мы через кнопку обновляем переменную в Car.vue -->
+    <h1>Parent: {{ carName }}</h1>
+    
+    <!-- С помощью nameChanged меняется переменная -->
+    <app-car :carName="carName" :carAge="carAge" @nameChanged="carName = $event"></app-car>
+  </div>
+</template>
+
+<script>
+  import Car from './Car.vue';
+
+  export default {
+    data () {
+      return {
+        carName: 'Ford',
+        carAge: 23
+      }
+    },
+    components: {
+      appCar: Car
+    }
+  }
+</script>
+
+<style lang="scss">
+
+</style>
+
+// Car.vue
+<template>
+    <div class="car">
+        <h3>Name: {{ carName }} // {{ reverseName }}</h3>
+        <p>Year: {{ carAge }}</p>
+        <button @click="changeName">Change name</button>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: {
+            carName: {
+                type: String,
+                default: 'Default name'
+            },
+            carAge: Number
+        },
+        computed: {
+            reverseName() {
+                return this.carName.split('').reverse().join('');
+            }
+        },
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            changeName() {
+                this.carName = 'BMW X6';
+                // 1 - название прослушиваемого события(название любое), 2 - значения, о которых мы хотим уведомить другие коспоненты
+                this.$emit('nameChanged', this.carName);
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .car {
+        padding: 24px;
+        border: 1px solid black;
+    }
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+})
