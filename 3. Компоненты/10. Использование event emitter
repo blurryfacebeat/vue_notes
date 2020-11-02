@@ -1,0 +1,127 @@
+// App.vue
+<template>
+  <div>
+    <h1>Parent: {{ carName }}</h1>
+
+    <app-counter></app-counter>
+
+    <app-car :carName="carName" :carAge="carAge" :changeFunc="changeNameToAudi" @nameChanged="carName = $event" @counterUpdated="counter = $event"></app-car>
+  </div>
+</template>
+
+<script>
+  import Car from './Car.vue';
+  import Counter from './Counter.vue';
+
+  export default {
+    data () {
+      return {
+        carName: 'Ford',
+        carAge: 23
+      }
+    },
+    methods: {
+      changeNameToAudi() {
+        this.carName = 'Audi R8';
+      }
+    },
+    components: {
+      appCar: Car,
+      appCounter: Counter
+    }
+  }
+</script>
+
+<style lang="scss">
+
+</style>
+
+// Car.vue
+<template>
+    <div class="car">
+        <h3>Name: {{ carName }} // {{ reverseName }}</h3>
+        <p>Year: {{ carAge }}</p>
+        <button @click="changeName">Change name</button>
+        <button @click="changeFunc">Change from parrent</button>
+        <button @click="updateCounter">Update Counter</button>
+    </div>
+</template>
+
+<script>
+    import { eventEmitter } from './main';
+
+    export default {
+        props: {
+            carName: {
+                type: String,
+                default: 'Default name'
+            },
+            carAge: Number,
+            changeFunc: Function
+        },
+        computed: {
+            reverseName() {
+                return this.carName.split('').reverse().join('');
+            }
+        },
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            changeName() {
+                this.carName = 'BMW X6';
+                this.$emit('nameChanged', this.carName);
+            },
+            updateCounter() {
+                // this.$emit('counterUpdated', this.counter++);
+                // Данные передаваемые с событием, задаем вторым параметром, например, увеличиваем counter на 3
+                eventEmitter.$emit('counterUpdated', 3);
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .car {
+        padding: 24px;
+        border: 1px solid black;
+    }
+</style>
+
+// Counter.vue
+<template>
+    <h1>Counter: {{ counter }}</h1>
+</template>
+
+<script>
+import { eventEmitter } from './main';
+
+export default {
+    data() {
+        return {
+            counter: 0
+        }
+    },
+    // Компонент создан, но не заложен в DOM-дерево
+    created() {
+        // шина событий, num - та 3 из Car.vue
+        eventEmitter.$on('counterUpdated', (num) => {
+            this.counter += num ;
+        });
+    }
+}
+</script>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+// Суть урока, создаем шину событий для двух дочерних компонентов
+export const eventEmitter = new Vue();
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
