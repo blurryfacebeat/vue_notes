@@ -1,0 +1,104 @@
+// App.vue
+<template>
+  <div>
+    <app-list></app-list>
+
+    <hr>
+
+    <h2>{{ title }}</h2>
+
+    <input type="text" v-model="searchName">
+
+    <ul>
+      <li v-for="name of filteredNames">{{ name }}</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  import ListMixin from './listMixin';
+
+  export default {
+    data() {
+      return {
+        title: 'Hello, i am Vue!'
+      }
+    },
+    mixins: [ListMixin],
+    filters: {
+      lowercase(value) {
+        return value.toLowerCase();
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+
+// List.vue
+<template>
+    <div>
+        <h1>List</h1>
+        <input type="text" v-model="searchName">    
+
+        <ul>
+        <li v-for="name of filteredNames">{{ name }}</li>
+        </ul>
+    </div>
+</template>
+
+<script>
+    // Регистрируем миксин локально
+    import ListMixin from './listMixin';
+
+    export default {
+        mixins: [ListMixin]
+    }
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+import List from './List.vue';
+
+Vue.filter('uppercase', value => {
+  return value.toUpperCase();
+});
+
+// Глобальный миксин
+Vue.mixin({
+  beforeCreate() {
+    console.log('beforeCreate');
+  }
+});
+
+Vue.component('app-list', List);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+
+// listMixin.js
+// Создаем миксин с фильтрацией, чтобы не дублировать код
+export default {
+    data() {
+        return {
+          searchName: '',
+          names: ['Dima', 'Katya', 'Sasha', 'Eva', 'Alex']
+        }
+      },
+      computed: {
+        filteredNames() {
+          return this.names.filter(name => {
+            return name.toLowerCase().indexOf(this.searchName.toLowerCase()) !== -1;
+          });
+        }
+      }
+}
