@@ -1,0 +1,40 @@
+// App.vue
+<template>
+  <div>
+    <h2 v-colored>{{ title }}</h2>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: 'Hello, i am Vue!'
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+
+// color.js
+import Vue from 'vue';
+import App from './App.vue';
+import ColorDirective from './color';
+
+Vue.directive('colored', ColorDirective);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+
+// main.js
+export default {
+    // el - куда привязывается наша директива, bindings(readonly) - все свойства, которые передаем внутрь директивы, vnode(readonly) - объект виртуального дерева, где будет храниться элемент нашей директивы
+    bind(el, bindings, vnode) {
+        el.style.color = 'blue';
+    }
+}
