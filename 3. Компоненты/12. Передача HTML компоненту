@@ -1,0 +1,66 @@
+// App.vue
+<template>
+  <div>
+    <app-car>
+      <!-- slot - для того, чтобы брать <slot> из Car.vue с параметром name и знать, куда в него вставить -->
+      <h2 slot="title">{{ carName }}</h2>
+      <p slot="text">Lorem, ipsum dolor.</p>
+    </app-car>
+  </div>
+</template>
+
+<script>
+  import Car from './Car.vue';
+
+  export default {
+    data() {
+      return {
+        carName: 'Ford'
+      }
+    },
+    components: {
+      appCar: Car
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+
+// Car.vue
+<template>
+    <div>
+        <slot name="title"></slot>
+        <hr>
+        <hr>
+        <slot name="text"></slot>
+    </div>
+</template>
+
+<script>
+    export default {
+        // Принимаем carName из другого компонента
+        // props: ['carName']
+    }
+</script>
+
+<style lang="scss" scoped>
+    div {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    h2 {
+        color: blue;
+    }
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
