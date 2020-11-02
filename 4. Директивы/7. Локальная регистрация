@@ -1,0 +1,69 @@
+// App.vue
+<template>
+  <div>
+    <h2 v-colored:background.font="'green'">{{ title }}</h2>
+    <h2 v-colored:color.delay.font="'blue'">{{ title }}</h2>
+
+    <h2 v-font-directive>Local Directive Registration</h2>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: 'Hello, i am Vue!',
+        visible: true
+      }
+    },
+    // Локальная регистрация, недоступная в других компонентах
+    directives: {
+      // 'font-directive: {}'
+      fontDirective: {
+        bind(el, bindings, vnode) {
+          el.style.fontSize = '40px';
+        }
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+
+// color.js
+export default {
+    bind(el, bindings, vnode) {
+        const fontModifier = bindings.modifiers['font'];
+
+        if (fontModifier) {
+            el.style.fontSize = '30px';
+        }
+
+        let delay = 0;
+        const delayModifier = bindings.modifiers['delay'];
+
+        if (delayModifier) {
+            delay = 2000;
+        }
+
+        setTimeout(() => {
+            const arg = bindings.arg;
+            el.style[arg] = bindings.value;
+        }, delay);
+    }
+}
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+import ColorDirective from './color';
+
+// Способ для глобальной регистрации директивы, для всех компонентов
+Vue.directive('colored', ColorDirective);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
