@@ -1,0 +1,53 @@
+// App.vue
+<template>
+  <div>
+    <h2>{{ title }}</h2>
+
+    <input type="text" v-model="searchName">
+
+    <!-- Более элегантный способ решить задачу фильтрации, без использования фильтров, с помощью computed -->
+    <ul>
+      <li v-for="name of filteredNames">{{ name }}</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: 'Hello, i am Vue!',
+        searchName: '',
+        names: ['Dima', 'Katya', 'Sasha', 'Eva', 'Alex']
+      }
+    },
+    computed: {
+      filteredNames() {
+        return this.names.filter(name => {
+          return name.toLowerCase().indexOf(this.searchName.toLowerCase()) !== -1;
+        });
+      }
+    },
+    filters: {
+      lowercase(value) {
+        return value.toLowerCase();
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+Vue.filter('uppercase', value => {
+  return value.toUpperCase();
+});
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
