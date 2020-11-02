@@ -1,0 +1,38 @@
+// App.vue
+<template>
+  <div>
+    <h2>{{ title }}</h2>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: 'Hello, i am Vue!'
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+import ColorDirective from './color';
+
+// Создаем директиву, второй параметр - объект, либо из файла, либо новый {}
+Vue.directive('colored', ColorDirective);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+
+// color.js
+export default {
+    
+}
