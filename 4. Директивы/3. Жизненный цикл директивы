@@ -1,0 +1,62 @@
+// App.vue
+<template>
+  <div>
+    <h2 v-colored v-if="visible">{{ title }}</h2>
+    <button @click="visible = !visible">vision</button>
+    <button @click="title = 'New Title'">title</button>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: 'Hello, i am Vue!',
+        visible: true
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+
+// color.js
+export default {
+    // el - куда привязывается наша директива, bindings(readonly) - все свойства, которые передаем внутрь директивы, vnode(readonly) - объект виртуального дерева, где будет храниться элемент нашей директивы
+    bind(el, bindings, vnode) {
+        console.log('bind');
+        el.style.color = 'blue';
+    },
+    inserted(el, bindings, vnode) {
+        console.log('inserted');
+    },
+    update(el, bindings, vnode, oldVnode) {
+        console.log('update');
+    },
+    componentUpdated(el, bindings, vnode, oldVnode) {
+        console.log('componentUpdated');
+    },
+    unbind() {
+        console.log('unbind');
+    }
+}
+
+// bind - первый этап жизенного цикла, она еще не находится в реальном DOM-дереве
+// inserted - второй этап, уже в DOM-дереве
+// update - вызывается, когда что-то происходит внутри DOM-дерева, и что-то изменяется (вызывается, когда обновился род. комп., но не дочерние) oldVnode - старая виртуальная нода
+// componentUpdated - когда обновились дочерние элементы
+// unbind - когда директива прекращает свое существование, и убирается из DOM-дерева
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+import ColorDirective from './color';
+
+Vue.directive('colored', ColorDirective);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
