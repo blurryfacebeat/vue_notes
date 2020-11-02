@@ -1,0 +1,46 @@
+// App.vue
+<template>
+  <div>
+    <h2>{{ title }}</h2>
+    <!-- Использование фильтра -->
+    <h2>{{ title | lowercase }}</h2>
+
+    <h2>{{ title | uppercase }}</h2>
+
+    <h2>{{ title | uppercase | lowercase }}</h2>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: 'Hello, i am Vue!'
+      }
+    },
+    // Локальный фильтр
+    filters: {
+      lowercase(value) {
+        return value.toLowerCase();
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+// Регистрация фильтра глобально (фильтры всегда должны что-то возвращать)
+Vue.filter('uppercase', value => {
+  return value.toUpperCase();
+});
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
