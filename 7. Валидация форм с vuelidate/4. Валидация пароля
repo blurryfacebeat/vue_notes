@@ -1,0 +1,89 @@
+// App.vue //
+<template>
+  <div class="container">
+    <form class="pt-3">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" :class="{'is-invalid': $v.email.$error}" @blur="$v.email.$touch()" v-model="email">
+
+        <div v-if="!$v.email.required" :style="{'display':'block'}" class="invalid-feedback">Email fields is required.</div>
+        <div v-if="!$v.email.email" :style="{'display':'block'}" class="invalid-feedback">This field should be an email.</div>
+      </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-control" :class="{'is-invalid': $v.password.$error}" @blur="$v.password.$touch()" v-model="password">
+
+          <div v-if="!$v.password.minLength" :style="{'display':'block'}" class="invalid-feedback">Пароль должен содержать не менее {{ $v.password.$params.minLength.min }} символов. Сейчас у вас {{ password.length }} символов.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blur="$v.confirmPassword.$touch()" v-model="confirmPassword">
+
+          <div v-if="!$v.confirmPassword.sameAs" :style="{'display':'block'}" class="invalid-feedback">Пароли не совпадают!</div>
+        </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
+
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
+  },
+  validations: {
+    email: {
+      required,
+      email
+    },
+    password: {
+      minLength: minLength(6)
+    },
+    confirmPassword: {
+      // Данное поле должно быть таким же, как и поле пароля
+      // Так же, можем передавать функцию, с полем, которое нужно проверять, позволяет получить доступ к любому уровню вложенности, например form.password, если бы в data() password лежала в form
+      // sameAs: sameAs('password')
+      sameAs: sameAs((vue) => {
+        return vue.password;
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// main.js //
+import Vue from 'vue';
+import Vuelidate from 'vuelidate';
+import App from './App.vue';
+
+Vue.use(Vuelidate);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+
+// index.html //
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>first-vue</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="/dist/build.js"></script>
+  </body>
+</html>
