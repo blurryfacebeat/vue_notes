@@ -1,0 +1,42 @@
+// App.vue
+<template>
+  <div>
+    <h2>Form Inputs</h2>
+
+    <input type="text" v-model.number="age">
+
+    <p>{{ age }}</p>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        age: 20
+      }
+    },
+    watch: {
+      // Отслеживаем изменение переменной age
+      age(value) {
+        console.log(value);
+        // По умолчанию выводит строку, но нам нужно работать именно с числом, для этого есть модификатор .number
+        console.log(typeof value);
+      }
+    }
+  }
+
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
