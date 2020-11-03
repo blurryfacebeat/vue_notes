@@ -1,0 +1,83 @@
+// App.vue
+<template>
+    <div>
+        <h2>Form Inputs</h2>
+
+        <app-onoff v-model="switched"></app-onoff>
+
+        <div>
+          <h3 v-if="switched">Component is enabled</h3>
+          <h3 v-else>Component is disabled</h3>
+        </div>
+    </div>
+</template>
+
+<script>
+import Onoff from './Onoff';
+
+export default {
+    data() {
+      return {
+        switched: false
+      }
+    },
+    components: {
+      appOnoff: Onoff
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+// Onoff.vue
+<template>
+    <div>
+        <button class="on" :class="{'active': value}" @click="onChange(true)">On</button>
+        <button class="off" :class="{'active': !value}" @click="onChange(false)">Off</button>
+    </div>
+</template>
+
+<script>
+export default {
+    props: ['value'],
+    methods: {
+        onChange(newValue) {
+            this.$emit('input', newValue);
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+    button {
+        border: none;
+        padding: 5px 15px;
+        cursor: pointer;
+        margin-right: 20px;
+        outline: none;
+
+        &:active {
+            box-shadow: inset 1px 1px 2px rgba(0, 0, 0, .5);
+        }
+    }
+
+    .on.active {
+        background-color: green;
+        color: #fff;
+    }
+
+    .off.active {
+        background-color: red;
+        color: #fff;
+    }
+</style>
+
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
