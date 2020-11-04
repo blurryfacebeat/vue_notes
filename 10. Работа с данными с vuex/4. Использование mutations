@@ -1,0 +1,76 @@
+// index.js //
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+    state: {
+        counter: 0
+    },
+    mutations: {
+        // В mutations нельзя передавать асинхронные события
+        changeCounter(state, payload) {
+            state.counter += payload;
+        }
+    },
+    getters: {
+        computedCounter(state) {
+            return state.counter;
+        }
+    }
+});
+
+// Actions.vue //
+<template>
+    <div>
+        <button class="btn btn-success" @click="updateCounter(1)">Add</button>
+        <button class="btn btn-danger" @click="updateCounter(-1)">Sub</button>
+    </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+      updateCounter(val) {
+        // this.$store.state.counter += val;
+        this.$store.commit('changeCounter', val);
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// Counter.vue //
+<template>
+    <div>
+        <h2>Counter: {{ counter }}</h2>
+    </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+    counter() {
+        return this.$store.getters.computedCounter;
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
