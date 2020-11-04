@@ -1,0 +1,116 @@
+// Car.vue //
+<template>
+    <div>
+        <h1>Car id: {{ id }}</h1>
+        <button class="btn btn-sm btn-info" @click="backToCars">Back to Cars</button>
+        <br>
+        <!-- Работаем с параметром hash -->
+        <router-link tag="button" class="btn btn-success mt-2" :to="{name: 'carInfo', params: {id: id}, query: {name: 'BMW X6', year: 2000}, hash: '#scroll'}">Full info</router-link>
+
+        <router-view></router-view>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            id: this.$route.params['id']
+        }
+    },
+    methods: {
+        backToCars() {
+            this.$router.push('/cars');
+        }
+    },
+    watch: {
+        $route(toRoute, fromRoute) {
+            this.id = toRoute.params['id'];
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// CarInfo.vue //
+<template>
+    <div>
+        <h4>Car name: {{ $route.query.name }}</h4>
+        <h5>Car year: {{ year }}</h5>
+
+        <div class="scroll"></div>
+
+        <h6 id="scroll">Hello from the bottom</h6>
+
+        <div class="scroll"></div>
+    </div>
+</template>
+
+<script>
+export default {
+    computed: {
+        year() {
+            return this.$route.query.year;
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+    .scroll {
+        width: 100px;
+        height: 1000px;
+        background-color: #cccccc;
+    }
+</style>
+
+// routes.js //
+import VueRouter from 'vue-router';
+import Home from './pages/Home';
+import Cars from './pages/Cars';
+import Car from './pages/Car';
+import CarInfo from './pages/CarInfo';
+
+export default new VueRouter ({
+    routes: [
+        {
+            path: '',
+            component: Home
+        },
+        {
+            path: '/cars',
+            component: Cars
+        },
+        {
+            path: '/car/:id',
+            component: Car,
+            children: [
+                {
+                    path: 'info',
+                    component: CarInfo,
+                    name: 'carInfo'
+                }
+            ]
+        }
+    ],
+    mode: 'history',
+    // savedPosition - позволяет не терять скролл, когда мы перемещаемся между странциами
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        }
+
+        if (to.hash) {
+            return { selector: to.hash };
+        }
+
+        return {
+            // Координаты, на которые должен перейти фокус страницы, это управление скроллингом вручную
+            x: 0,
+            y: 300
+        }
+    }
+});
