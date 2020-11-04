@@ -1,0 +1,32 @@
+// Car.vue //
+<template>
+    <div>
+        <h1>Car id: {{ id }}</h1>
+        <!-- Сделаем этот роут программным путем -->
+        <button class="btn btn-sm btn-info" @click="backToCars">Back to Cars</button>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            id: this.$route.params['id']
+        }
+    },
+    methods: {
+        backToCars() {
+            this.$router.push('/cars');
+        }
+    },
+    watch: {
+        $route(toRoute, fromRoute) {
+            this.id = toRoute.params['id'];
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
