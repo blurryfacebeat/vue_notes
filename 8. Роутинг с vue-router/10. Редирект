@@ -1,0 +1,71 @@
+// Error.vue //
+<template>
+    <h1 style="color: red;">404 not found</h1>
+</template>
+
+<script>
+export default {
+    
+}
+</script>
+
+// routes.js //
+import VueRouter from 'vue-router';
+import Home from './pages/Home';
+import Cars from './pages/Cars';
+import Car from './pages/Car';
+import ErrorCmp from './pages/Error';
+import CarInfo from './pages/CarInfo';
+
+export default new VueRouter ({
+    routes: [
+        {
+            path: '',
+            component: Home
+        },
+        {
+            path: '/cars',
+            component: Cars,
+            name: 'cars'
+        },
+        {
+            path: '/car/:id',
+            component: Car,
+            children: [
+                {
+                    path: 'info',
+                    component: CarInfo,
+                    name: 'carInfo'
+                }
+            ]
+        },
+        {
+            // Когда попадаем на этот роут, делаем редирект
+            path: '/none',
+            // redirect: '/',
+            redirect: {
+                name: 'cars'
+            }
+        },
+        {
+            // Перебрасываем, например, на страницу 404 (* - все роутеры, которые не зареганы)
+            path: '*',
+            component: ErrorCmp
+        }
+    ],
+    mode: 'history',
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        }
+
+        if (to.hash) {
+            return { selector: to.hash };
+        }
+
+        return {
+            x: 0,
+            y: 300
+        }
+    }
+});
