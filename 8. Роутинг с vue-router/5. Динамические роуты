@@ -1,0 +1,131 @@
+// App.vue //
+<template>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <router-link tag="li" class="nav-item" exact to="/" active-class="active">
+            <a class="nav-link">Home</a>
+          </router-link>
+          <router-link tag="li" class="nav-item" to="/cars" active-class="active">
+            <a class="nav-link">Cars</a>
+          </router-link>
+
+          <router-link tag="li" class="nav-item" to="/car/3" active-class="active">
+            <a class="nav-link">Car 3</a>
+          </router-link>
+
+          <router-link tag="li" class="nav-item" to="/car/4" active-class="active">
+            <a class="nav-link">Car 4</a>
+          </router-link>
+        </ul>
+      </div>
+    </nav>
+    <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// Cars.vue //
+<template>
+  <div>
+    <h1>Cars Page</h1>
+
+    <ul>
+      <router-link tag="li" v-for="car of 5" :to="'/car/' + car" :key="car">
+        <a>Car: {{ car }}</a>
+      </router-link> 
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// Home.vue //
+<template>
+  <div>
+    <h1>Home Page</h1>
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// Car.vue //
+<template>
+    <div>
+        <h1>Car id: {{ id }}</h1>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            // id - как в routes.js
+            // Можно и так писать, и так, как в watch
+            // id: this.$router.currentRoute.params['id']
+            id: this.$route.params['id']
+        }
+    },
+    watch: {
+        $route(toRoute, fromRoute) {
+            // Отслеживаем параметр id поля, к которому хотим перейти, без этого бы неправильно работал переход по ссылкам Car 3, Car 4, мы бы оставались на одной из них, при переходе на другую, постоянно
+            this.id = toRoute.params['id'];
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// routes.js //
+import VueRouter from 'vue-router';
+import Home from './pages/Home';
+import Cars from './pages/Cars';
+import Car from './pages/Car';
+
+export default new VueRouter ({
+    routes: [
+        {
+            path: '',
+            component: Home
+        },
+        {
+            path: '/cars',
+            component: Cars
+        },
+        {
+            // Указываем, что после car будет динамическое свойство id
+            path: '/car/:id',
+            component: Car
+        }
+    ],
+    mode: 'history'
+});
