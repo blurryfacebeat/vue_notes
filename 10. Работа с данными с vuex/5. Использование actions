@@ -1,0 +1,61 @@
+// Actions.vue //
+<template>
+    <div>
+        <button class="btn btn-success" @click="updateCounter(1)">Add</button>
+        <button class="btn btn-danger" @click="updateCounter(-1)">Sub</button>
+    </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+      updateCounter(val) {
+        // this.$store.commit('changeCounter', val);
+        this.$store.dispatch('asyncChangeCounter', {
+            // Если хотим передать несколько параметров, то нужно создать объект
+            counterValue: val,
+            timeOutDelay: 200
+        });
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// index.js //
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+    state: {
+        counter: 0
+    },
+    mutations: {
+        changeCounter(state, payload) {
+            state.counter += payload;
+        }
+    },
+    // Для асинхронной работы
+    actions: {
+        asyncChangeCounter({commit}, payload) {
+            setTimeout(() => {
+                commit('changeCounter', payload.counterValue);
+            }, payload.timeOutDelay);
+        }
+    },
+    getters: {
+        computedCounter(state) {
+            return state.counter;
+        }
+    }
+});
