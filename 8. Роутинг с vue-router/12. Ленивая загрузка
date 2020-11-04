@@ -1,0 +1,78 @@
+// Просто так, все наши Vue-файлы собираются в один файл
+// Чтобы оптимизировать приложение, сделаем так, чтобы модули грузились только по требованию, по нажатию на роут
+// routes.js //
+import VueRouter from 'vue-router';
+import Home from './pages/Home';
+// Удаляем импорт, если хотим сделать ленивую загрузку
+// import Cars from './pages/Cars';
+import Car from './pages/Car';
+import ErrorCmp from './pages/Error';
+import CarInfo from './pages/CarInfo';
+
+// ленивая загрузка, вызываем функцию тогда, когда згрузится файл
+const Cars = resolve => {
+    require.ensure(['./pages/Cars.vue'], () => {
+        resolve(
+            require('./pages/Cars.vue')
+        );
+    });
+};
+
+export default new VueRouter ({
+    routes: [
+        {
+            path: '',
+            component: Home
+        },
+        {
+            path: '/cars',
+            component: Cars,
+            name: 'cars'
+        },
+        {
+            path: '/car/:id',
+            component: Car,
+            children: [
+                {
+                    path: 'info',
+                    component: CarInfo,
+                    name: 'carInfo',
+                    beforeEnter(to, from, next) {
+                        console.log('beforeEnter');
+                        
+                        if (true) {
+                            next(true);
+                        } else {
+                            next(false);
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            path: '/none',
+            redirect: {
+                name: 'cars'
+            }
+        },
+        {
+            path: '*',
+            component: ErrorCmp
+        }
+    ],
+    mode: 'history',
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        }
+
+        if (to.hash) {
+            return { selector: to.hash };
+        }
+
+        return {
+            x: 0,
+            y: 300
+        }
+    }
+});
