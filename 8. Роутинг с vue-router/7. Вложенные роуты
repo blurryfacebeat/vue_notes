@@ -1,0 +1,90 @@
+// Car.vue //
+<template>
+    <div>
+        <h1>Car id: {{ id }}</h1>
+        <button class="btn btn-sm btn-info" @click="backToCars">Back to Cars</button>
+        <br>
+        <!-- Вложенный роут, например, вся инфа о машине -->
+        <!-- <router-link tag="button" class="btn btn-success mt-2" :to="'/car/' + id + '/info'">Full info</router-link> -->
+        <!-- Используем специальную фичу, чтобы сделать более легкий путь для :to -->
+        <router-link tag="button" class="btn btn-success mt-2" :to="{name: 'carInfo', params: {id: id}}">Full info</router-link>
+
+        <!-- Рендерим сюда дочерние роуты -->
+        <router-view></router-view>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            id: this.$route.params['id']
+        }
+    },
+    methods: {
+        backToCars() {
+            this.$router.push('/cars');
+        }
+    },
+    watch: {
+        $route(toRoute, fromRoute) {
+            this.id = toRoute.params['id'];
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// CarInfo.vue //
+<template>
+    <div>
+        <h4>Car name: Ford</h4>
+        <h5>Car year: 2016</h5>
+    </div>
+</template>
+
+<script>
+export default {
+    
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// routes.js //
+import VueRouter from 'vue-router';
+import Home from './pages/Home';
+import Cars from './pages/Cars';
+import Car from './pages/Car';
+import CarInfo from './pages/CarInfo';
+
+export default new VueRouter ({
+    routes: [
+        {
+            path: '',
+            component: Home
+        },
+        {
+            path: '/cars',
+            component: Cars
+        },
+        {
+            path: '/car/:id',
+            component: Car,
+            // делаем вложенный роут
+            children: [
+                {
+                    path: 'info', // localhost:8080/car/:id/full
+                    component: CarInfo,
+                    name: 'carInfo'
+                }
+            ]
+        }
+    ],
+    mode: 'history'
+});
