@@ -1,0 +1,128 @@
+// Car.vue //
+<template>
+    <div>
+        <h1>Car id: {{ id }}</h1>
+        <button class="btn btn-sm btn-info" @click="backToCars">Back to Cars</button>
+        <br>
+        <!-- query-параметры, те, которые после ? и & в адресной строке  -->
+        <router-link tag="button" class="btn btn-success mt-2" :to="{name: 'carInfo', params: {id: id}, query: {name: 'BMW X6', year: 2000}}">Full info</router-link>
+
+        <router-view></router-view>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            id: this.$route.params['id']
+        }
+    },
+    methods: {
+        backToCars() {
+            this.$router.push('/cars');
+        }
+    },
+    watch: {
+        $route(toRoute, fromRoute) {
+            this.id = toRoute.params['id'];
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// CarInfo.vue //
+<template>
+    <div>
+        <!-- Обращаемся к query-параметрам -->
+        <h4>Car name: {{ $route.query.name }}</h4>
+        <h5>Car year: {{ year }}</h5>
+    </div>
+</template>
+
+<script>
+export default {
+    computed: {
+        year() {
+            return this.$route.query.year;
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// routes.js //
+import VueRouter from 'vue-router';
+import Home from './pages/Home';
+import Cars from './pages/Cars';
+import Car from './pages/Car';
+import CarInfo from './pages/CarInfo';
+
+export default new VueRouter ({
+    routes: [
+        {
+            path: '',
+            component: Home
+        },
+        {
+            path: '/cars',
+            component: Cars
+        },
+        {
+            path: '/car/:id',
+            component: Car,
+            children: [
+                {
+                    path: 'info',
+                    component: CarInfo,
+                    name: 'carInfo'
+                }
+            ]
+        }
+    ],
+    mode: 'history'
+});
+
+// App.vue //
+<template>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <router-link tag="li" class="nav-item" exact to="/" active-class="active">
+            <a class="nav-link">Home</a>
+          </router-link>
+          <router-link tag="li" class="nav-item" to="/cars" active-class="active">
+            <a class="nav-link">Cars</a>
+          </router-link>
+
+          <router-link tag="li" class="nav-item" to="/car/3" active-class="active">
+            <a class="nav-link">Car 3</a>
+          </router-link>
+
+          <router-link tag="li" class="nav-item" to="/car/4" active-class="active">
+            <a class="nav-link">Car 4</a>
+          </router-link>
+        </ul>
+      </div>
+    </nav>
+    <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
