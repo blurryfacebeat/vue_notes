@@ -1,0 +1,35 @@
+// https://github.com/pagekit/vue-resource
+// https://github.com/typicode/json-server
+// App.vue //
+<template>
+  <div class="container">
+    
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+// main.js //
+import Vue from 'vue';
+import VueResource from 'vue-resource';
+import App from './App.vue';
+
+Vue.use(VueResource);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+
+// db.json //
+{
+    "cars": []
+}
